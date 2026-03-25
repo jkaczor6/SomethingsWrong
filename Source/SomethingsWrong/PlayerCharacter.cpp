@@ -40,7 +40,14 @@ void APlayerCharacter::Tick(float DeltaTime)
 
 	FHitResult HitResult;
 	bool HasHit = GetWorld()->SweepSingleByChannel(HitResult, Start, End, FQuat::Identity, ECC_GameTraceChannel1, InteractionSphere);
-	
+	if (HasHit)
+	{
+		CanInteract = true;
+	}
+	else
+	{
+		CanInteract = false;
+	}
 }
 
 void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -87,7 +94,21 @@ void APlayerCharacter::LookInput(const FInputActionValue& Value)
 
 void APlayerCharacter::InteractInput(const FInputActionValue& Value)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Interact"));
+	if (CanInteract)
+	{
+		FVector Start = Camera->GetComponentLocation();
+		FVector End = Start + (Camera->GetForwardVector() * MaxInteractionDistance);
+
+		FCollisionShape InteractionSphere = FCollisionShape::MakeSphere(30.0f);
+
+		FHitResult HitResult;
+		bool HasHit = GetWorld()->SweepSingleByChannel(HitResult, Start, End, FQuat::Identity, ECC_GameTraceChannel1, InteractionSphere);
+		if (HasHit)
+		{
+			AActor* HitActor = HitResult.GetActor();
+			GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, FString::Printf(TEXT("Interacted with actor %s"), *HitActor->GetActorNameOrLabel()));
+		}
+	}
 }
 
 void APlayerCharacter::CrouchInputBegin(const FInputActionValue& Value)
