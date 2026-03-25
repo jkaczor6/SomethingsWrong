@@ -49,4 +49,6 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Movement")
 	float SprintMultiplier = 2.0f;
 	float DefaultMaxWalkingSpeed;
+	UPROPERTY(EditAnywhere, Category = "Raycast")
+	float MaxInteractionDistance = 300.0f;
 };
