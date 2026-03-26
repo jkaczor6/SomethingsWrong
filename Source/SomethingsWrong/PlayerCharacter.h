@@ -8,6 +8,7 @@ class UInputComponent;
 class UInputAction;
 class UInputMappingContext;
 class UCameraComponent;
+class AInteractableItem;
 struct FInputActionValue;
 
 UCLASS()
@@ -52,4 +53,5 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Raycast")
 	float MaxInteractionDistance = 300.0f;
 	bool CanInteract = false;
+	AInteractableItem* CurrentItem;
 };

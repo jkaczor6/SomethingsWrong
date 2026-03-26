@@ -4,6 +4,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "InteractableItem.h"
 
 APlayerCharacter::APlayerCharacter()
 {
@@ -40,14 +41,29 @@ void APlayerCharacter::Tick(float DeltaTime)
 
 	FHitResult HitResult;
 	bool HasHit = GetWorld()->SweepSingleByChannel(HitResult, Start, End, FQuat::Identity, ECC_GameTraceChannel1, InteractionSphere);
+	
+	AInteractableItem* NewItem = nullptr;
+
 	if (HasHit)
 	{
-		CanInteract = true;
+		NewItem = Cast<AInteractableItem>(HitResult.GetActor());
 	}
-	else
+
+	if (NewItem != CurrentItem)
 	{
-		CanInteract = false;
+		if (CurrentItem)
+		{
+			CurrentItem->UnHighlightItem();
+		}
+		CurrentItem = NewItem;
+		if (CurrentItem)
+		{
+			CurrentItem->HighlightItem();
+		}
 	}
+
+	CanInteract = (CurrentItem != nullptr);
+	
 }
 
 void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
