@@ -37,7 +37,7 @@ void APlayerCharacter::Tick(float DeltaTime)
 	FVector Start = Camera->GetComponentLocation();
 	FVector End = Start + (Camera->GetForwardVector() * MaxInteractionDistance);
 
-	FCollisionShape InteractionSphere = FCollisionShape::MakeSphere(30.0f);
+	FCollisionShape InteractionSphere = FCollisionShape::MakeSphere(5.0f);
 
 	FHitResult HitResult;
 	bool HasHit = GetWorld()->SweepSingleByChannel(HitResult, Start, End, FQuat::Identity, ECC_GameTraceChannel1, InteractionSphere);
@@ -115,7 +115,7 @@ void APlayerCharacter::InteractInput(const FInputActionValue& Value)
 		FVector Start = Camera->GetComponentLocation();
 		FVector End = Start + (Camera->GetForwardVector() * MaxInteractionDistance);
 
-		FCollisionShape InteractionSphere = FCollisionShape::MakeSphere(30.0f);
+		FCollisionShape InteractionSphere = FCollisionShape::MakeSphere(5.0f);
 
 		FHitResult HitResult;
 		bool HasHit = GetWorld()->SweepSingleByChannel(HitResult, Start, End, FQuat::Identity, ECC_GameTraceChannel1, InteractionSphere);
